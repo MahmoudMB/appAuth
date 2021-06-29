@@ -66,7 +66,7 @@ public final class UriUtil {
         uriBuilder.appendQueryParameter(paramName, value.toString());
     }
 
-    public static Long getLongQueryParameter(@NonNull Uri uri, @NonNull String param) {
+    public static Long getLongQueryParameter(@NonNull UriParser uri, @NonNull String param) {
         String valueStr = uri.getQueryParameter(param);
         if (valueStr != null) {
             return Long.parseLong(valueStr);

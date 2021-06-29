@@ -27,7 +27,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import net.openid.appauth.AuthorizationException.AuthorizationRequestErrors;
 import net.openid.appauth.internal.Logger;
 import org.json.JSONException;
-
+import net.openid.appauth.internal.UriParser;
 /**
  * Stores state and handles events related to the authorization management flow. The activity is
  * started by {@link AuthorizationService#performAuthorizationRequest} or
@@ -265,13 +265,14 @@ public class AuthorizationManagementActivity extends AppCompatActivity {
     }
 
     private void handleAuthorizationComplete() {
-        Uri responseUri = getIntent().getData();
+        Uri data = getIntent().getData();
+        UriParser responseUri = new UriParser(data);
         Intent responseData = extractResponseData(responseUri);
         if (responseData == null) {
             Logger.error("Failed to extract OAuth2 response from redirect");
             return;
         }
-        responseData.setData(responseUri);
+        responseData.setData(data);
 
         sendResult(mCompleteIntent, responseData, RESULT_OK);
     }
@@ -323,7 +324,7 @@ public class AuthorizationManagementActivity extends AppCompatActivity {
         }
     }
 
-    private Intent extractResponseData(Uri responseUri) {
+    private Intent extractResponseData(UriParser responseUri) {
         if (responseUri.getQueryParameterNames().contains(AuthorizationException.PARAM_ERROR)) {
             return AuthorizationException.fromOAuthRedirect(responseUri).toIntent();
         } else {

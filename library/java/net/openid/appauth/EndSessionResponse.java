@@ -23,6 +23,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
+import net.openid.appauth.internal.UriParser;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -76,7 +78,7 @@ public class EndSessionResponse extends AuthorizationManagementResponse {
         }
 
         @VisibleForTesting
-        Builder fromUri(@NonNull Uri uri) {
+        Builder fromUri(@NonNull UriParser uri) {
             setState(uri.getQueryParameter(KEY_STATE));
             return this;
         }
